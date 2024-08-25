@@ -63,7 +63,7 @@ async def unauthusers(client, message: Message, _):
 
 
 @app.on_message(
-    filters.command(["authlist", "authusers"]) & filters.group & ~BANNED_USERS
+    filters.command(["authlist", "yetkili", "authusers"]) & filters.group & ~BANNED_USERS
 )
 @language
 async def authusers(client, message: Message, _):
