@@ -4,15 +4,14 @@ import re
 import json
 from typing import Union
 
-import yt_dlp
+from yt_dlp import YoutubeDL
 from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message
 from youtubesearchpython.__future__ import VideosSearch
 
-from AnonXMusic.utils.database import is_on_off
-from AnonXMusic.utils.formatters import time_to_seconds
-
-USE_COOKIES_ONLY = False
+import config
+from ArchMusic.utils.database import is_on_off
+from ArchMusic.utils.formatters import time_to_seconds
 
 
 def cookiefile():
@@ -48,12 +47,12 @@ async def check_file_size(link):
     info = await get_format_info(link)
     if info is None:
         return None
-
+    
     formats = info.get('formats', [])
     if not formats:
         print("No formats found.")
         return None
-
+    
     total_size = parse_size(formats)
     return total_size
 
@@ -224,7 +223,7 @@ class YouTubeAPI:
         if "&" in link:
             link = link.split("&")[0]
         ytdl_opts = {"quiet": True}
-        ydl = yt_dlp.YoutubeDL(ytdl_opts)
+        ydl = YoutubeDL(ytdl_opts)
         with ydl:
             formats_available = []
             r = ydl.extract_info(link, download=False)
@@ -297,7 +296,7 @@ class YouTubeAPI:
                 "quiet": True,
                 "no_warnings": True,
             }
-            x = yt_dlp.YoutubeDL(ydl_optssx)
+            x = YoutubeDL(ydl_optssx)
             info = x.extract_info(link, False)
             xyz = os.path.join("downloads", f"{info['id']}.{info['ext']}")
             if os.path.exists(xyz):
@@ -315,7 +314,7 @@ class YouTubeAPI:
                 "quiet": True,
                 "no_warnings": True,
             }
-            x = yt_dlp.YoutubeDL(ydl_optssx)
+            x = YoutubeDL(ydl_optssx)
             info = x.extract_info(link, False)
             xyz = os.path.join("downloads", f"{info['id']}.{info['ext']}")
             if os.path.exists(xyz):
@@ -337,7 +336,7 @@ class YouTubeAPI:
                 "prefer_ffmpeg": True,
                 "merge_output_format": "mp4",
             }
-            x = yt_dlp.YoutubeDL(ydl_optssx)
+            x = YoutubeDL(ydl_optssx)
             x.download([link])
 
         def song_audio_dl():
@@ -359,7 +358,7 @@ class YouTubeAPI:
                     }
                 ],
             }
-            x = yt_dlp.YoutubeDL(ydl_optssx)
+            x = YoutubeDL(ydl_optssx)
             x.download([link])
 
         if songvideo:
@@ -388,7 +387,7 @@ class YouTubeAPI:
                 stdout, stderr = await proc.communicate()
                 if stdout:
                     downloaded_file = stdout.decode().split("\n")[0]
-                    direct = None
+                    direct = False
                 else:
                     return
         else:
