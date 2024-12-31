@@ -29,10 +29,10 @@ from config import BANNED_USERS, lyrical
     filters.command(
         [
             "play",
-            "vveke", 
-            "veke", 
-            "oynat", 
-            "voynat", 
+            "vveke",
+            "veke",
+            "oynat",
+            "voynat",
             "vplay",
             "cplay",
             "cvplay",
